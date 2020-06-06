@@ -46,6 +46,8 @@ int main()
     Fecha fdate, defdate;
     Libro libro;
     ofstream finReservar;
+    Reserva Raux;
+    Material* aux;
 
   //Software variables 
     int version;
@@ -99,7 +101,7 @@ int main()
         
 ///////////////////Error con duracion///////////
 
-        arrDataMaterial[filas] = new Disco(idMaterial, titulo, duracion, genero);
+        arrDataMaterial[filas] = new Disco(idMaterial, titu, duracion, genero);
       
 
      }else{
@@ -111,13 +113,13 @@ int main()
           idMaux=idMaterial;
         }
 ////// Error guardando version ////////////
-      arrDataMaterial[filas] = new Software(idMaterial, titulo, version, SO);
+      arrDataMaterial[filas] = new Software(idMaterial, titu, version, SO);
     }
     numMaterial++;
   } archMaterial.close();
-//Guardando datos de Reserva txt
 
-  
+
+//Guardando datos de Reserva txt
   int numReservas = 0;
   int reservasIniciales = 0;
   archReserva.open("Reserva.txt");
@@ -134,13 +136,14 @@ int main()
   //----------------------------------------------------------
 
   while(opcion == true){
+    cout << " " << endl;
     cout << "-|-|-|-|-|-|-|-|-|-|-|-|-|-|"<< endl;
     cout << "Bienvenido al menú de opciones del sistema de reserva" << endl;
     cout << "-|-|-|-|-|-|-|-|-|-|-|-|-|-|" << endl;
-		cout << " 1- Mostrar lista de materiales" << endl;
-		cout << " 2- Mostrar lista de reservaciones" << endl;
-		cout << " 3- Mostrar la reservación de un material en especifico. " << endl;
-		cout << " 4- Mostrar la reservación de una fecha en especifico." << endl;
+		cout << " 1- Mostrar lista de materiales." << endl;
+		cout << " 2- Mostrar lista de reservaciones." << endl;
+		cout << " 3- Mostrar la reservación de un material." << endl;
+		cout << " 4- Mostrar la reservación de una fecha." << endl;
 		cout << " 5- Hacer una reservación. " << endl;
 		cout << " 6- Finalizar el programa. " << endl;
 		cin >> menu;
@@ -151,7 +154,7 @@ int main()
       for(int x = 0; x<numMaterial; x++){
         arrDataMaterial[x]->muestraDatos();
       }
-
+      break;
 //------------------------------------------------------------      
       case 2:
       for(int x = 0; x<numReservas; x++){
@@ -164,21 +167,27 @@ int main()
           Fecha tFecha = arrDataReservacion[x].setcalculaFechaFinReserva(dias);
           for(int y=0; y<numMaterial; y++){
             if(arrDataReservacion[x].getidMaterial()==arrDataMaterial[y]->getidMaterial()){
-              cout<<arrDataMaterial[y]->gettitulo()<< " Fecha Inicial"<<" "<< aux << " Fecha Final " <<" "<<tFecha << endl;
+              cout << "Reservación del titulo:" << endl;
+              cout<<arrDataMaterial[y]->gettitulo()<< endl;
+              cout << " Fecha Inicial"<< aux << endl;
+              cout << " Fecha Final " << tFecha << endl;
               cout << " -----------------------------" << endl;
             }
           }
 
         }
         //En caso de que el material esté entre 200 y 300
-        if(mat>=200 && mat<300){
+        else if(mat>=200 && mat<300){
           dias = 2;
           Fecha tFecha = arrDataReservacion[x].setcalculaFechaFinReserva(dias);
           for(int y=0; y<numMaterial; y++){
             //cout<<y<<endl;
             //cout<<arrDataReservacion[x].getidMaterial()<<"   "<<arrDataMaterial[y]->getidMaterial()<<endl;
             if(arrDataReservacion[x].getidMaterial()==arrDataMaterial[y]->getidMaterial()){
-              cout<<arrDataMaterial[y]->gettitulo()<< " Fecha Inicial"<<" "<< aux << " Fecha Final " <<" "<<tFecha << endl;
+              cout<<"Fecha de reservación " << endl;
+              cout <<arrDataMaterial[y]->gettitulo()<< endl;
+              cout << " Fecha Inicial"<<" "<< aux <<endl;
+              cout << " Fecha Final " <<tFecha << endl;
               cout << " -----------------------------" << endl;
             }
           }
@@ -186,7 +195,7 @@ int main()
         }
 
         //En caso de que el material sea mayor a 300
-        if(mat>=300){
+        else if(mat>=300){
           dias = 1;
           Fecha tFecha = arrDataReservacion[x].setcalculaFechaFinReserva(dias);
           for(int y=0; y<numMaterial; y++){
@@ -269,14 +278,46 @@ int main()
 				defdate.setdd(dia2);
 				defdate.setmm(mes2);
 				defdate.setaa(anio2);
-				
-				for (int i = 0; i < 50; i++) {
+				for(int x=0;x<numReservas; x++){
+          Fecha f(arrDataReservacion[x].getfechaReservacion());
+          if(arrDataReservacion[x].getfechaReservacion()==defdate){
+            
+            Raux=arrDataReservacion[x];
+            for(int x=0; x<numMaterial; x++){
+              if(Raux.getidMaterial()==arrDataMaterial[x]->getidMaterial()){
+                aux=arrDataMaterial[x];
+              }
+            }
+            switch(aux->getclave()[0]){
+              case 'L':
+                dias=7;
+                break;
+                case 'D':
+                dias=2;
+                break;
+                case 'S':
+                dias=1;
+                break;
+            }
+            cout << "Fecha inicial: ";
+								Raux.getfechaReservacion().muestraDatos();
+								cout << "Titulo: " << aux->gettitulo()<< endl;
+								cout << "Id cliente: " << Raux.getidCliente() << endl;
+                Raux.getfechaReservacion()+dias;
+								cout <<"Deadline: " << endl;
+                Raux.getfechaReservacion().muestraDatos();
+								cout << endl;
+          }
+        }
+        
+        
+				/*for (int i = 0; i < numReservas; i++) {
 					
 					if (arrDataReservacion[i].getidMaterial() > 100 && arrDataReservacion[i].getidMaterial() < 200) {
-						dias = 10;
+						dias = 7;
 					}
 					else if (arrDataReservacion[i].getidMaterial() > 200 && arrDataReservacion[i].getidMaterial() < 300) {
-						dias = 3;
+						dias = 2;
 					}
 					else if (arrDataReservacion[i].getidMaterial() > 300 && arrDataReservacion[i].getidMaterial() < 400) {
 						dias = 1;
@@ -304,7 +345,7 @@ int main()
 						
 						
 					}
-				}
+				}*/
 					
 
 
@@ -320,10 +361,18 @@ int main()
       	cout << "-Proceso de hacer una reservación-" << endl;
 				cout << "Introduce tu ID de cliente : " << endl;
 				cin >> cID;
-        cout << cID;
 				cout << "Introduce tu ID del material: " << endl;
 				cin >> materialId;
-
+        bool conf=0;
+        for(int x=0; x<numMaterial; x++){
+          if(materialId==arrDataMaterial[x]->getidMaterial()){
+            conf=1;
+          }
+        }
+        if(!conf){
+          cout << "El Material no existe";
+          break;
+        }
         
 				cout << "-Proceso de fecha del material-" << endl;
 				cout << "Día:" << endl;
@@ -369,6 +418,7 @@ for (int l = 0; l < 20; l++) { //ENTRA EN UN CICLO POR TODOS LOS MATERIALES PARA
 if (tieneReservacion && !fechaOcupada)
 					{
 						cout << "Reservado Correctamente"<<endl;
+           // cout << cID << materialId << dia << mes << anio << endl;
             cout << "A continuación regresarás al menú" << endl;
 						Reserva finalReserve(idMaterial, cID, defdate);
 						arrDataReservacion[numReservas] = finalReserve;
@@ -379,7 +429,7 @@ if (tieneReservacion && !fechaOcupada)
 				if (!tieneReservacion)
 				{
 					cout << "Reservado Correctamente"<<endl;
-					Reserva finalReserve(idMaterial, cID, defdate);
+					Reserva finalReserve(materialId, cID, defdate);
 					arrDataReservacion[numReservas] = finalReserve;
 					numReservas++;
 				}
@@ -394,56 +444,7 @@ if (tieneReservacion && !fechaOcupada)
     }
   }
 
-  
-      /*
-      if(clave == "L"){
-        //Poner un nuevo contador para cada caso, L, D, S
-        arrDataMaterial[cont] = &arrLibros[cont];
-        arrLibros[cont].setidMaterial(idM);
 
-
-      } else if(clave == "D"){
-        arrDataMaterial[cont] = &arrDisco[cont];
-      } else if(clave == )
-    }
-    */
-/*
-    arrLibros[0].setidMaterial(1);
-    arrLibros[0].settitulo("hola");
-    arrLibros[0].setclave("a");
-    arrLibros[0].setAutor("Pedro");
-    arrLibros[0].setnumPag(20);
-
-    arrDataMaterial[0] = &arrLibros[0];
-    arrDataMaterial[0]->muestraDatos();
-*/
-    // ifstream archMaterial;
-    // archMaterial.open("Material.txt");
-    // int cont=0;
-    // while(!archMaterial.eof()){
-    //     int idM;
-    //     string titu;
-    //     string clave; //Aqui es L, D ó S 
-    //     int data1;
-    //     string data2;
-
-    //     archMaterial >> idMaterial >> titu >> clave >> data1 >> data2;
-
-    //     arrDataMaterial[cont].setidMaterial(idM);
-    //     arrDataMaterial[cont].settitulo(titu);
-      
-    //     if(data1 == 'L'){
-
-    //       arrDataMaterial[cont].setclave(clave);
-    //     } else if(data1 == 'D'){
-    //       arrDataMaterial[cont].setclave(clave);
-    //     }else if 
-      
-    // }
-
-    // Reserva arrDataReserva[60];
-
-    // Libro librito;
     return 0;
-}
+ }
 }
