@@ -169,7 +169,7 @@ int main()
             if(arrDataReservacion[x].getidMaterial()==arrDataMaterial[y]->getidMaterial()){
               cout << "Reservación del titulo:" << endl;
               cout<<arrDataMaterial[y]->gettitulo()<< endl;
-              cout << " Fecha Inicial"<< aux << endl;
+              cout << " Fecha "<< aux << endl;
               cout << " Fecha Final " << tFecha << endl;
               cout << " -----------------------------" << endl;
             }
@@ -228,7 +228,7 @@ int main()
 								 if (arrDataReservacion[il].getidMaterial() >= 100 && arrDataReservacion[il].getidMaterial() < 200) {
 
 									 
-									 fdate= arrDataReservacion[il].setcalculaFechaFinReserva(10);
+									 fdate= arrDataReservacion[il].setcalculaFechaFinReserva(7);
 									 cout << "Deadline: ";
 									 fdate.muestraDatos();
 									 valorEncontrado = true;
@@ -236,7 +236,7 @@ int main()
 								 else if(arrDataReservacion[il].getidMaterial() >= 200 && arrDataReservacion[il].getidMaterial() < 300) {
 
 
-									 fdate = arrDataReservacion[il].setcalculaFechaFinReserva(3);
+									 fdate = arrDataReservacion[il].setcalculaFechaFinReserva(2);
 									 cout << "Deadline: ";
 									 fdate.muestraDatos();
 									 valorEncontrado = true;
@@ -299,7 +299,7 @@ int main()
                 dias=1;
                 break;
             }
-            cout << "Fecha inicial: ";
+            cout << "Fecha : ";
 								Raux.getfechaReservacion().muestraDatos();
 								cout << "Titulo: " << aux->gettitulo()<< endl;
 								cout << "Id cliente: " << Raux.getidCliente() << endl;
